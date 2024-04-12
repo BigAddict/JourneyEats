@@ -352,3 +352,26 @@ document.addEventListener('DOMContentLoaded', function() {
       profileImageInput.value = "{% static 'img/profile.png' %}"; // Clear file input
   });
 });
+
+document.addEventListener('DOMContentLoaded', function() {
+  var imageInput = document.getElementById('imageInput');
+  var imagePreview = document.getElementById('imagePreview');
+  var removeImage = document.getElementById('removeImage');
+
+  imageInput.addEventListener('change', function(event) {
+      var file = event.target.files[0];
+      var reader = new FileReader();
+
+      reader.onload = function(e) {
+          imagePreview.src = e.target.result;
+      };
+
+      reader.readAsDataURL(file);
+  });
+
+  removeImage.addEventListener('click', function(event) {
+      event.preventDefault();
+      imagePreview.src = "{% static 'img/profile.png' %}";
+      imageInput.value = "{% static 'img/profile.png' %}"; // Clear file input
+  });
+});

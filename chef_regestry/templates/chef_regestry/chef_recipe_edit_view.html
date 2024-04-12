@@ -1,0 +1,114 @@
+{% extends "dashboard/base.html" %}
+{% load static %}
+{% block title %}JourneyEats{% endblock %}
+{% block content %}
+
+<section class="section">
+    <div class="row">
+      <div class="col-lg-10">
+        <span class="badge bg-primary">Total Recipes: <span class="badge bg-white text-primary">{{recipe_count|default:"No Recipes Added"}}</span></span>
+        <span class="badge bg-primary">Total Views: <span class="badge bg-white text-primary">{{recipe.total_views|default:"No Views"}}</span></span>
+        <span class="badge bg-primary">Total Likes: <span class="badge bg-white text-primary">{{recipe.total_likes|default:"No Likes"}}</span></span>
+      </div>
+      <div class="col-lg-2">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalDialogScrollable">
+          Add a Recipe
+        </button>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-4">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Example Card</h5>
+            <p>This is an examle page with no contrnt. You can use it as a starter for your custom pages.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="col-lg-4">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Example Card</h5>
+            <p>This is an examle page with no contrnt. You can use it as a starter for your custom pages.</p>
+          </div>
+        </div>
+
+      </div>
+
+        <div class="col-lg-4">
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Example Card</h5>
+            <p>This is an examle page with no contrnt. You can use it as a starter for your custom pages.</p>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Example Card</h5>
+            <p>This is an examle page with no contrnt. You can use it as a starter for your custom pages.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal fade" id="modalDialogScrollable" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <form action="{% url "recipes" %}" method="POST" enctype="multipart/form-data">
+              {% csrf_token %}
+              <div class="modal-header">
+                <h5 class="modal-title">Add Recipe</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+                <div class="card">
+                  <div class="card-body row">
+                    <label for="imageInput" class="card-title col-form-label">Recipe Thumbnail</label>
+                      <div class="col-md-8 col-lg-9">
+                        <img id="imagePreview" src="{% if recipe.thumbnail %}{{ recipe.thumbnail.url }}{% else %}{% static 'img/profile.png' %}{% endif %}" alt="Recipe Thumbnail">
+                        <div class="pt-2">
+                          <label for="imageInput" class="btn btn-primary btn-sm" title="Upload new Thumbnail"><i class="bi bi-upload"></i> Upload Thumbnail</label>
+                          <input name="profile_picture" type="file" id="imageInput" accept="image/*" style="display: none;">
+                          <a href="#" id="removeImage" class="btn btn-danger btn-sm" title="Remove recipe Thumbnail"><i class="bi bi-trash"></i> Remove Thumbnail</a>
+                        </div>
+                      </div>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-body">
+                    <label for="short_description" class="col-form card-title">Short Description</label>
+                    <textarea name="short_description" id="short_description" maxlength="250" class="form-control"></textarea>
+                  </div>
+                </div>
+                <div class="card">
+                  <div class="card-body">
+                    <label for="ingredients" class="col-form card-title">Ingredients</label>
+                    <div class="quill-editor-default"></div>
+                  </div> 
+                </div>
+                <div class="card">
+                  <div class="card-body">
+                    <label for="description" class="col-form card-title">Description</label>
+                    <div class="quill-editor-full"></div>
+                  </div>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <button type="submit" class="btn btn-primary">Save changes</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+{% endblock %}

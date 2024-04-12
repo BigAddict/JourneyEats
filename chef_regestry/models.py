@@ -23,9 +23,10 @@ class Chef(models.Model):
 
 class Recipe(models.Model):
     chef = models.ForeignKey(Chef, on_delete=models.CASCADE, related_name='recipes')
-    thumbnail = models.ImageField(('Recipe Thumbnail'), upload_to='recipe_thumbnails/')
+    thumbnail = models.ImageField(_('Recipe Thumbnail'), upload_to='recipe_thumbnails/')
     title = models.CharField(_("Title"), max_length=100)
-    description = models.TextField(_('Description'), blank=True)
+    short_description = models.CharField(_("Short Description"), max_length=250, blank=True)
+    description = models.TextField(_('Full Description'))
     ingredients = models.TextField(_("Ingredients"))
     updated_at = models.DateTimeField(_("Updated At"), auto_now=True)
 
@@ -58,3 +59,20 @@ class RecipePhotos(models.Model):
     
     def __str__(self):
         return f"Photo for {self.recipe.title}"
+    
+class RecipeInteraction(models.Model):
+    """
+    When a user views a chef's recipe, this model logs automatically and is used
+    to determine the number of views a certain recipe had.
+    """
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE, related_name="interactions")
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    like = models.BooleanField(_("Like Recipe"), blank=True)
+    comment = models.CharField(_("Comment"), max_length=150, blank=True)
+
+    class Meta:
+        verbose_name = _("Recipe Interaction")
+        verbose_name_plural = _("Recipe Interactions")
+
+    def __str__(self):
+        return f"{self.user.email} interaction on {self.recipe.chef.user.email}'s recipe."
